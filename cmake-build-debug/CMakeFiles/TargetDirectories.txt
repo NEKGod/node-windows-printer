@@ -1,0 +1,3 @@
+H:/pojo/sumatrapdf/node-printer/cmake-build-debug/CMakeFiles/node_printer.dir
+H:/pojo/sumatrapdf/node-printer/cmake-build-debug/CMakeFiles/edit_cache.dir
+H:/pojo/sumatrapdf/node-printer/cmake-build-debug/CMakeFiles/rebuild_cache.dir

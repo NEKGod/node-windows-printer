@@ -1,2 +1,4 @@
 H:\pojo\sumatrapdf\node-printer\main.cpp;H:\pojo\sumatrapdf\node-printer\build\Release\obj\printer\main.obj
+H:\pojo\sumatrapdf\node-printer\lib\base64\base64.cpp;H:\pojo\sumatrapdf\node-printer\build\Release\obj\printer\lib\base64\base64.obj
+H:\pojo\sumatrapdf\node-printer\lib\win-iconv\win_iconv.c;H:\pojo\sumatrapdf\node-printer\build\Release\obj\printer\lib\win-iconv\win_iconv.obj
 H:\node\node_global\node_modules\node-gyp\src\win_delay_load_hook.cc;H:\pojo\sumatrapdf\node-printer\build\Release\obj\printer\win_delay_load_hook.obj

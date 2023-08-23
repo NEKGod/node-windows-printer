@@ -1,6 +1,9 @@
 {
+  "name": "printview",
+  "version": "1.1.0",
+  "main": "main.js",
+  "license": "MIT",
   "devDependencies": {
-    "@electron/rebuild": "^3.2.13",
-    "electron-rebuild": "^3.2.9"
+    "@electron/rebuild": "^3.2.13"
   }
 }

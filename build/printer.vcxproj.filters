@@ -4,6 +4,24 @@
     <Filter Include="..">
       <UniqueIdentifier>{739DB09A-CC57-A953-A6CF-F64FA08E4FA7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="..">
+      <UniqueIdentifier>{739DB09A-CC57-A953-A6CF-F64FA08E4FA7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\lib">
+      <UniqueIdentifier>{2739B19F-16DF-601C-060A-FF86F6A40045}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\lib\base64">
+      <UniqueIdentifier>{9DB745F7-2ACD-4F35-61BE-279424BE188D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..">
+      <UniqueIdentifier>{739DB09A-CC57-A953-A6CF-F64FA08E4FA7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\lib">
+      <UniqueIdentifier>{2739B19F-16DF-601C-060A-FF86F6A40045}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\lib\win-iconv">
+      <UniqueIdentifier>{65B8B37E-F4A4-E3EF-25EE-E78B985E772E}</UniqueIdentifier>
+    </Filter>
     <Filter Include="H:">
       <UniqueIdentifier>{28132D8B-9F90-D4FB-17D2-44A8017291EF}</UniqueIdentifier>
     </Filter>
@@ -29,6 +47,12 @@
   <ItemGroup>
     <ClCompile Include="..\main.cpp">
       <Filter>..</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\base64\base64.cpp">
+      <Filter>..\lib\base64</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\win-iconv\win_iconv.c">
+      <Filter>..\lib\win-iconv</Filter>
     </ClCompile>
     <ClCompile Include="H:\node\node_global\node_modules\node-gyp\src\win_delay_load_hook.cc">
       <Filter>H:\node\node_global\node_modules\node-gyp\src</Filter>

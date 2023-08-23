@@ -25,6 +25,9 @@ namespace printer {
     }
 
     void getPrinterList(const FunctionCallbackInfo<Value> &args) {
+        // 设置控制台以支持 UTF-8 编码
+        SetConsoleOutputCP(CP_UTF8);
+
         Isolate *isolate = args.GetIsolate();
         // 创建一个新的V8对象
         Local<Context> context = isolate->GetCurrentContext();
@@ -34,17 +37,17 @@ namespace printer {
         DWORD bufferSize = 0;
         DWORD printerCount = 0;
         // 获取需要的缓冲区大小和打印机数量
-        EnumPrinters(PRINTER_ENUM_LOCAL, nullptr, 2, nullptr, 0, &bufferSize, &printerCount);
+        EnumPrintersW(PRINTER_ENUM_LOCAL, nullptr, 2, nullptr, 0, &bufferSize, &printerCount);
         if (bufferSize < 0) {
             FUNCTION_RETURN(args, printList)
         }
         printerBuffer.resize(bufferSize);
         // 获取打印机列表
         auto *pPrinterInfo = reinterpret_cast<PRINTER_INFO_2 *>(printerBuffer.data());
-        if (EnumPrinters(PRINTER_ENUM_LOCAL, nullptr, 2, reinterpret_cast<LPBYTE>(pPrinterInfo), bufferSize,
-                         &bufferSize, &printerCount)) {
+        if (EnumPrintersW(PRINTER_ENUM_LOCAL, nullptr, 2, reinterpret_cast<LPBYTE>(pPrinterInfo), bufferSize,
+                          &bufferSize, &printerCount)) {
             for (DWORD i = 0; i < printerCount; ++i) {
-                Local<Object> obj = mapperPrinterInfoNodeObject(isolate, context, &pPrinterInfo[i]);
+                Local<Object> obj = mapperPrinterInfoNodeObjectW(isolate, context, &pPrinterInfo[i]);
                 printList->Set(context, i, obj);
             }
         }
@@ -75,16 +78,14 @@ namespace printer {
         if (!ok) {
             TRY_FUNCTION(isolate, "打印机名称不存在 001!!!")
         }
-        GetPrinter(hPrinter, 2, nullptr, 0, &needed);
+        GetPrinterW(hPrinter, 2, nullptr, 0, &needed);
         BYTE* printerBuffer  = new BYTE[needed];
-        ok = GetPrinter(hPrinter, 2, printerBuffer, needed, &needed);
+        ok = GetPrinterW(hPrinter, 2, printerBuffer, needed, &needed);
         if (!ok || needed <= sizeof(PRINTER_INFO_2)) {
             TRY_FUNCTION(isolate, "获取打印机信息异常 001!!!")
         }
         auto* info = reinterpret_cast<PRINTER_INFO_2*>(printerBuffer);
-        std::wcout << "Printer Name: " << info->pPrinterName << std::endl;
-
-        Local<Object> printerInfoNodeObject = mapperPrinterInfoNodeObject(isolate, context, info);
+        Local<Object> printerInfoNodeObject = mapperPrinterInfoNodeObjectW(isolate, context, info);
         /* ask for the size of DEVMODE struct */
         structSize = DocumentPropertiesW(nullptr, hPrinter, printerName, nullptr, nullptr, 0);
         if (structSize < sizeof(DEVMODEW)) {
@@ -179,7 +180,7 @@ namespace printer {
         Local<Context> context = isolate->GetCurrentContext();
         // 创建一个新的V8数组
         Local<Array> jobList = Array::New(isolate);
-            const char* argsPrinterNamePoint = *argsPrinterName;
+        const char* argsPrinterNamePoint = *argsPrinterName;
         HANDLE hPrinter = nullptr;
         BOOL ok = OpenPrinter(ConvertUtf8ToGbk(argsPrinterNamePoint), &hPrinter, nullptr);
         if (!ok) {
@@ -226,6 +227,7 @@ namespace printer {
         NODE_SET_METHOD(exports, "getPrinterList", getPrinterList);
         NODE_SET_METHOD(exports, "getPrinterInfo", getPrinterInfo);
         NODE_SET_METHOD(exports, "getPrinterJobList", getPrinterJobList);
+        NODE_SET_METHOD(exports, "getWPrinterList", getPrinterList);
     }
 
     NODE_MODULE(NODE_GYP_MODULE_NAME, Initialize)

@@ -52,21 +52,7 @@ build cmake_object_order_depends_target_node_printer: phony || CMakeFiles/node_p
 build CMakeFiles/node_printer.dir/main.cpp.obj: CXX_COMPILER__node_printer_Debug H$:/pojo/sumatrapdf/node-printer/main.cpp || cmake_object_order_depends_target_node_printer
   DEP_FILE = CMakeFiles\node_printer.dir\main.cpp.obj.d
   FLAGS = -std=c++11 -fexec-charset=UTF-8 -g -std=gnu++14
-  INCLUDES = -IC:/Users/ASUS/AppData/Local/node-gyp/Cache/16.16.0/include/node
-  OBJECT_DIR = CMakeFiles\node_printer.dir
-  OBJECT_FILE_DIR = CMakeFiles\node_printer.dir
-
-build CMakeFiles/node_printer.dir/printer/printer.cpp.obj: CXX_COMPILER__node_printer_Debug H$:/pojo/sumatrapdf/node-printer/printer/printer.cpp || cmake_object_order_depends_target_node_printer
-  DEP_FILE = CMakeFiles\node_printer.dir\printer\printer.cpp.obj.d
-  FLAGS = -std=c++11 -fexec-charset=UTF-8 -g -std=gnu++14
-  INCLUDES = -IC:/Users/ASUS/AppData/Local/node-gyp/Cache/16.16.0/include/node
-  OBJECT_DIR = CMakeFiles\node_printer.dir
-  OBJECT_FILE_DIR = CMakeFiles\node_printer.dir\printer
-
-build CMakeFiles/node_printer.dir/getPrinterList.cpp.obj: CXX_COMPILER__node_printer_Debug H$:/pojo/sumatrapdf/node-printer/getPrinterList.cpp || cmake_object_order_depends_target_node_printer
-  DEP_FILE = CMakeFiles\node_printer.dir\getPrinterList.cpp.obj.d
-  FLAGS = -std=c++11 -fexec-charset=UTF-8 -g -std=gnu++14
-  INCLUDES = -IC:/Users/ASUS/AppData/Local/node-gyp/Cache/16.16.0/include/node
+  INCLUDES = -IC:/Users/ASUS/AppData/Local/node-gyp/Cache/16.16.0/include/node -IH:/pojo/sumatrapdf/node-printer/lib/icu4c/include
   OBJECT_DIR = CMakeFiles\node_printer.dir
   OBJECT_FILE_DIR = CMakeFiles\node_printer.dir
 
@@ -78,7 +64,7 @@ build CMakeFiles/node_printer.dir/getPrinterList.cpp.obj: CXX_COMPILER__node_pri
 #############################################
 # Link the executable node_printer.exe
 
-build node_printer.exe: CXX_EXECUTABLE_LINKER__node_printer_Debug CMakeFiles/node_printer.dir/main.cpp.obj CMakeFiles/node_printer.dir/printer/printer.cpp.obj CMakeFiles/node_printer.dir/getPrinterList.cpp.obj
+build node_printer.exe: CXX_EXECUTABLE_LINKER__node_printer_Debug CMakeFiles/node_printer.dir/main.cpp.obj
   FLAGS = -std=c++11 -fexec-charset=UTF-8 -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\node_printer.dir

@@ -7,6 +7,75 @@
 #include <vector>
 #include <node_api.h>
 #include <codecvt>
+#include <ShlObj.h>
+#include <fstream>
+
+bool WindowsAddToStartup(const std::wstring& executablePath) {
+    HRESULT hr = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE);
+    if (SUCCEEDED(hr)) {
+        wchar_t startupPath[MAX_PATH];
+        if (SUCCEEDED(SHGetFolderPathW(nullptr, CSIDL_STARTUP, nullptr, 0, startupPath))) {
+            std::wstring shortcutPath = std::wstring(startupPath) + L"\\" + L"windows_printer.lnk"; // 替换为你的快捷方式名
+
+            IShellLinkW* pShellLink;
+            hr = CoCreateInstance(CLSID_ShellLink, nullptr, CLSCTX_INPROC_SERVER, IID_IShellLinkW, (LPVOID*)&pShellLink);
+            if (SUCCEEDED(hr)) {
+                pShellLink->SetPath(executablePath.c_str());
+                IPersistFile* pPersistFile;
+                hr = pShellLink->QueryInterface(IID_IPersistFile, (LPVOID*)&pPersistFile);
+                if (SUCCEEDED(hr)) {
+                    hr = pPersistFile->Save(shortcutPath.c_str(), TRUE);
+                    pPersistFile->Release();
+                    if (SUCCEEDED(hr)) {
+                        std::wcout << L"已将程序添加至启动文件夹。" << std::endl;
+                        return true;
+                    } else {
+                        std::cerr << "无法保存快捷方式文件。" << std::endl;
+                    }
+                }
+                pShellLink->Release();
+            } else {
+                std::cerr << "无法创建Shell链接实例。" << std::endl;
+            }
+        } else {
+            std::cerr << "无法获取启动文件夹路径。" << std::endl;
+        }
+        CoUninitialize();
+    } else {
+        std::cerr << "无法初始化COM库。" << std::endl;
+    }
+    return false;
+}
+
+
+bool CopyFile(const std::wstring& source, const std::wstring& destination) {
+    return CopyFileW(source.c_str(), destination.c_str(), FALSE);
+}
+
+bool WindowsAddToStartupBat(const std::wstring& executablePath, const std::string& utf8ExecutablePath) {
+    wchar_t startupPath[MAX_PATH];
+    if (SUCCEEDED(SHGetFolderPathW(nullptr, CSIDL_STARTUP, nullptr, 0, startupPath))) {
+        std::wstring shortcutPath = std::wstring(startupPath) + L"\\windows_printer.bat"; // 替换为你的批处理文件名
+
+        std::ofstream scriptFile(std::string(shortcutPath.begin(), shortcutPath.end()), std::ofstream::out | std::ofstream::binary);
+        if (scriptFile.is_open()) {
+//            scriptFile << "\xEF\xBB\xBF"; // 写入 UTF-8 BOM，用于指示 UTF-8 编码
+            scriptFile << "chcp 65001" << std::endl;
+            scriptFile << "start" << " \"\" " << "\"" << utf8ExecutablePath << "\"" << std::endl;
+            scriptFile << "exit" << std::endl;
+            scriptFile.close();
+
+            std::wcout << L"已将程序添加至启动文件夹。" << std::endl;
+            return true;
+        } else {
+            std::cerr << "无法创建批处理文件。" << std::endl;
+        }
+    } else {
+        std::cerr << "无法获取启动文件夹路径。" << std::endl;
+    }
+
+    return false;
+}
 
 namespace printer {
     using v8::Context;
@@ -222,12 +291,25 @@ namespace printer {
         FUNCTION_RETURN(args, jobList)
     }
 
+    void AddToStartup(const FunctionCallbackInfo<Value> &args){
+        Isolate *isolate = args.GetIsolate();
+        // 创建一个新的V8对象
+        Local<Context> context = isolate->GetCurrentContext();
+        v8::String::Utf8Value argsPrinterName(args.GetIsolate(), args[0]);
+        const char* filePath_cstr = *argsPrinterName;
+        // 将宽字符字符串赋值给LPWSTR类型
+        LPWSTR filePath = ConvertToLPWSTR(filePath_cstr);
+        FUNCTION_RETURN(args, v8::Boolean::New(isolate,  WindowsAddToStartupBat(filePath, filePath_cstr)))
+    }
+
     void Initialize(Local<Object> exports) {
         NODE_SET_METHOD(exports, "hello", Method);
         NODE_SET_METHOD(exports, "getPrinterList", getPrinterList);
         NODE_SET_METHOD(exports, "getPrinterInfo", getPrinterInfo);
         NODE_SET_METHOD(exports, "getPrinterJobList", getPrinterJobList);
         NODE_SET_METHOD(exports, "getWPrinterList", getPrinterList);
+        NODE_SET_METHOD(exports, "addToStartup", AddToStartup);
+
     }
 
     NODE_MODULE(NODE_GYP_MODULE_NAME, Initialize)

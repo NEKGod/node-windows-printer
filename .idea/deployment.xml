@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" remoteFilesAllowedToDisappearOnAutoupload="false">
+  <component name="PublishConfigData" autoUpload="Always" remoteFilesAllowedToDisappearOnAutoupload="false">
     <serverData>
-      <paths name="远程主机 (da0a854b-5205-4415-a3cd-85abce3ec402)">
+      <paths name="远程主机 (1) (d831c5e4-32ab-4453-ae10-f6892765df4e)">
         <serverdata>
           <mappings>
-            <mapping deploy="/tmp/node-printer" local="$PROJECT_DIR$" />
+            <mapping deploy="/tmp/tmp.P0Jlv9b2fN" local="$PROJECT_DIR$" />
           </mappings>
+          <excludedPaths>
+            <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-debug" />
+          </excludedPaths>
         </serverdata>
       </paths>
     </serverData>
+    <option name="myAutoUpload" value="ALWAYS" />
   </component>
 </project>
